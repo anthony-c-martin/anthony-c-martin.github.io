@@ -9,6 +9,7 @@ module.exports = {
     siteUrl: `https://anthony-c-martin.github.io/blog/`,
     social: { },
   },
+  pathPrefix: `/blog`,
   plugins: [
     `gatsby-plugin-image`,
     {
