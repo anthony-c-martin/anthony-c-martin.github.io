@@ -1,0 +1,40 @@
+name: Publish
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2.1.5
+        with:
+          node-version: 14.x
+          
+      - name: Get GitHub Remote URL
+        id: get_gh_remote
+        run: |
+          gh_remote=`git config --get remote.origin.url`
+          echo "::set-output name=gh_remote:$gh_remote"
+      
+      - name: Install Packages
+        run: npm ci
+      
+      - name: Build
+        run: npm run build
+        
+      - name: Publish
+        working-directory: ./public
+        run: |
+          git init
+          git config remote.origin.url ${{ steps.get_gh_remote.outputs.gh_remote }}
+          git config user.name ${{ github.actor }}
+          git config user.email ${{ github.actor }}@users.noreply.github.com
+          git commit -m "🚀🚀🚀"
+          git push -f origin gh-pages
