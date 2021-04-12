@@ -1,15 +1,13 @@
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Starter Blog`,
+    title: `Misc Blog`,
     author: {
-      name: `Kyle Mathews`,
-      summary: `who lives and works in San Francisco building useful things.`,
+      name: `Anthony Martin`,
+      summary: `- developer at Microsoft, living in Chapel Hill, NC.`,
     },
-    description: `A starter blog demonstrating what Gatsby can do.`,
-    siteUrl: `https://gatsbystarterblogsource.gatsbyjs.io/`,
-    social: {
-      twitter: `kylemathews`,
-    },
+    description: `Blog to put down miscellaneous thoughts.`,
+    siteUrl: `https://anthony-c-martin.github.io/blog/`,
+    social: { },
   },
   plugins: [
     `gatsby-plugin-image`,
@@ -51,12 +49,12 @@ module.exports = {
     },
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
-    // {
-    //   resolve: `gatsby-plugin-google-analytics`,
-    //   options: {
-    //     trackingId: `ADD YOUR TRACKING ID HERE`,
-    //   },
-    // },
+    {
+      resolve: `gatsby-plugin-google-analytics`,
+      options: {
+        trackingId: `G-EPP24V2VTE`,
+      },
+    },
     {
       resolve: `gatsby-plugin-feed`,
       options: {
@@ -112,8 +110,8 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `Gatsby Starter Blog`,
-        short_name: `GatsbyJS`,
+        name: `Anthony Martin's Blog`,
+        short_name: `Anthony's Blog`,
         start_url: `/`,
         background_color: `#ffffff`,
         theme_color: `#663399`,
