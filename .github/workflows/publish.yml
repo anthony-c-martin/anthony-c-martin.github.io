@@ -9,19 +9,50 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2.3.1
+    - uses: actions/checkout@v2.3.1
 
-      - uses: actions/setup-node@v2.1.5
-        with:
-          node-version: 14.x
+    - uses: actions/setup-node@v2.1.5
+      with:
+        node-version: 14.x
 
-      - name: Build
-        run: |
-          npm ci
-          npm run build
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Build
+      run: |
+        npm ci
+        npm run build
         
-      - name: Publish
-        uses: JamesIves/github-pages-deploy-action@4.1.1
-        with:
-          branch: gh-pages
-          folder: public
+    - name: Deploy GH Pages
+      uses: JamesIves/github-pages-deploy-action@4.1.1
+      with:
+        branch: gh-pages
+        folder: public
+
+    - name: Deploy Azure
+      uses: azure/CLI@v1
+      with:
+        inlineScript: |
+          OUTPUT=$(az deployment sub create \
+            --location "East US 2" \
+            --name "blog-deploy" \
+            --template-file ../../deploy/main.bicep \
+            --query "[properties.outputs.stgAccName.value, properties.outputs.stgAccKey.value]" \
+            --output tsv)
+          
+          STG_ACC_NAME=$(awk 'NR == 1' <<<$OUTPUT)
+          STG_ACC_KEY=$(awk 'NR == 2' <<<$OUTPUT)
+
+          az storage blob service-properties update \
+            --account-name $STG_ACC_NAME \
+            --static-website \
+            --404-document 404.html \
+            --index-document index.html
+          
+          az storage blob sync \
+            --account-name $STG_ACC_NAME \
+            --account-key $STG_ACC_KEY \
+            --source ../../public \
+            --container "\$web"

@@ -6,10 +6,9 @@ module.exports = {
       summary: `- developer at Microsoft, living in Chapel Hill, NC.`,
     },
     description: `Blog to put down miscellaneous thoughts.`,
-    siteUrl: `https://anthony-c-martin.github.io/blog/`,
+    siteUrl: `https://anthonymart.in/`,
     social: { },
   },
-  pathPrefix: `/blog`,
   plugins: [
     `gatsby-plugin-image`,
     {
